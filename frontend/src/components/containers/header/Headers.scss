@@ -5,29 +5,49 @@ header{
     align-items: center;
     background-color: #424242;
     height: 10vh;
-    padding: 0 10px 0 10px;
+    padding: 0 30px 0 30px;
+    @media (max-width: 768px) {
+        height: 15vh;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 0;
+      }
+}
+
+#linksContainer{
+    display: flex;
+    gap: 20px;
+    @media (max-width: 768px) {
+        gap: 5px;
+      }
 }
 
 #headerTitle{
     font-size: 2rem;
     color: 	#DDDDDD;
-    margin-left: 10px;
+    @media (max-width: 768px) {
+        font-size: 1.5rem;
+      }
+      @media (max-width: 1000px) {
+        font-size: 1.5rem;
+      }
 }
 
 .linkTitle{
     font-size: 1.5rem;
     color: #DDDDDD;
-    transition: 0.5s;
-    margin-right: 10px;
+    transition: 0.5s ease;
+    @media (max-width: 768px) {
+        font-size: 0.8rem;
+      }
+      @media (max-width: 1000px) {
+        font-size: 1rem;
+      }
 }
 
 .linkTitle:hover{
-    color: #FFFFFF;
-    transition: 0.5s;
-}
-
-#linksContainer{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+    color: #424242;
+    background-color: #DDDDDD;
+    transition: 0.5s ease;
 }
