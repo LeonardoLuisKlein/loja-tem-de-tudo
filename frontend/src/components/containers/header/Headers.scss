@@ -1,0 +1,33 @@
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #424242;
+    height: 10vh;
+    padding: 0 10px 0 10px;
+}
+
+#headerTitle{
+    font-size: 2rem;
+    color: 	#DDDDDD;
+    margin-left: 10px;
+}
+
+.linkTitle{
+    font-size: 1.5rem;
+    color: #DDDDDD;
+    transition: 0.5s;
+    margin-right: 10px;
+}
+
+.linkTitle:hover{
+    color: #FFFFFF;
+    transition: 0.5s;
+}
+
+#linksContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
