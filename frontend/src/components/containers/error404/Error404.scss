@@ -1,0 +1,12 @@
+.errorPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+
+    .errorGif{
+        @media (max-width: 580px) {
+            width: 100%;
+          }
+    }
+}
