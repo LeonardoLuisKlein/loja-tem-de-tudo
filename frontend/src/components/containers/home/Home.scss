@@ -1,0 +1,43 @@
+#homePage{
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    @media (max-width: 768px) {
+            flex-direction: column;
+          }
+
+
+    #homeWrapper{
+
+        display: flex;
+        flex-direction: row;
+        @media (max-width: 768px) {
+            flex-direction: column;
+            width: 100%;
+          }
+
+        #titles{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            #homeTitle{
+                font-size: 3rem;
+                @media (max-width: 768px) {
+                    font-size: 2rem;
+                  }
+            }
+
+            .homeP{
+                font-size: 2rem;
+                @media (max-width: 768px) {
+                    font-size: 1.5rem;
+                  }
+            }
+        }
+    }
+}
