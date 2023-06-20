@@ -1,0 +1,37 @@
+.labelInput{
+    font-size: 1.2rem;
+    color: #767676;
+    display: flex;
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
+}
+
+input{
+    color: #111111;
+    border: 2.5px solid #aaaaaa;
+    border-radius: 4px;
+    background: none;
+    padding: 5px 5px 5px 10px;
+    font-size: 1.2rem;
+    &:focus {
+      outline: 0;
+    }
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+}
+
+.basicError{
+  display: none;
+  font-size: 1rem;
+  color: red;
+}
+
+.invalid, .basicError {
+  display: flex;
+}
+
+input:focus{
+  outline: 0;
+}
