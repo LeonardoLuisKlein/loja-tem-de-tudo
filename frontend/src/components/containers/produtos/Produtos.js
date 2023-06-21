@@ -11,6 +11,7 @@ export const Produtos = () => {
   const [quantidade, setQuantidade] = useState('');
   const [descricao, setDescricao] = useState('');
   const [precoUnit, setPrecoUnit] = useState('');
+  const [produtos, setProdutos] = useState([]);
   const [isValidName, setIsValidName] = useState(true);
   const [isValidCodigo, setIsValidCodigo] = useState(true);
   const [isValidQuantidade, setIsValidQuantidade] = useState(true);
@@ -61,24 +62,33 @@ export const Produtos = () => {
     setIsValidPrecoUnit(isValidPrecoUnitInput);
 
     if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput && isValidDescricaoInput && isValidPrecoUnitInput) {
-      try {
-        const response = await axios.post('URL_DO_BACKEND', {
-          name,
-          quantidade,
-          descricao,
-          precoUnit,
-        });
+      const novoProduto = {
+        id: produtos.length + 1,
+        codigo,
+        nome: name,
+        preco: precoUnit,
+        quantidade,
+        descricao,
+      };
   
-        window.alert('Dados enviados com sucesso');
-        // Você pode tratar a resposta do backend aqui, se necessário
-  
-      } catch (error) {
-        window.alert('Erro ao enviar dados para o backend:', error);
-      }
+      setProdutos([...produtos, novoProduto]);
+      window.alert('Dados enviados com sucesso');
     }
   }
 
-
+  const handleEdit = (productId) => {
+    // Lógica para lidar com a edição do produto com o ID fornecido
+    // Pode ser exibido um modal de edição, redirecionado para uma página de edição, etc.
+    console.log(`Editar produto com ID: ${productId}`);
+  };
+  
+  const handleDelete = (productId) => {
+    // Lógica para lidar com a exclusão do produto com o ID fornecido
+    // Remova o produto do estado "produtos"
+    const updatedProdutos = produtos.filter((produto) => produto.id !== productId);
+    setProdutos(updatedProdutos);
+    console.log(`Excluir produto com ID: ${productId}`);
+  };
 
   return (
     <div id="clientesForm">
@@ -156,16 +166,18 @@ export const Produtos = () => {
           <p>Preço</p>
           <p>Quantidade</p>
         </div>
-        <div id="clienteTableDown">
-          <p>123</p>
-          <p>Pistola</p>
-          <p>20</p>
-          <p>4</p>
+        {produtos.map((produto) => (
+        <div key={produto.id} id="clienteTableDown">
+          <p>{produto.codigo}</p>
+          <p>{produto.nome}</p>
+          <p>{produto.preco}</p>
+          <p>{produto.quantidade}</p>
           <div id="edit">
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
+          <button className="buttonED" onClick={() => handleEdit(produto.id)}><AiFillEdit /></button>
+          <button className="buttonED" onClick={() => handleDelete(produto.id)}><AiFillDelete /></button>
           </div>
         </div>
+        ))}
       </section>
       </div>
     </div>

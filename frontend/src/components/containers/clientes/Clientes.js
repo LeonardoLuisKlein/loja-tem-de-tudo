@@ -63,6 +63,20 @@ export const Clientes = () => {
     }
   }
 
+  // const handleEdit = (productId) => {
+  //   // Lógica para lidar com a edição do produto com o ID fornecido
+  //   // Pode ser exibido um modal de edição, redirecionado para uma página de edição, etc.
+  //   console.log(`Editar produto com ID: ${productId}`);
+  // };
+  
+  // const handleDelete = (productId) => {
+  //   // Lógica para lidar com a exclusão do produto com o ID fornecido
+  //   // Remova o produto do estado "produtos"
+  //   const updatedProdutos = produtos.filter((produto) => produto.id !== productId);
+  //   setProdutos(updatedProdutos);
+  //   console.log(`Excluir produto com ID: ${productId}`);
+  // };
+
   return (
     <div id="clientesForm">
       <h1>Clientes</h1>
@@ -129,48 +143,8 @@ export const Clientes = () => {
           <p>000.000.000-00</p>
           <p>2000/06/20</p>
           <div>
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
-          </div>
-        </div>
-        <div id="clienteTableDown">
-          <p>Irineu</p>
-          <p>Rua ali</p>
-          <p>000.000.000-00</p>
-          <p>2000/06/20</p>
-          <div>
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
-          </div>
-        </div>
-        <div id="clienteTableDown">
-          <p>Irineu</p>
-          <p>Rua ali</p>
-          <p>000.000.000-00</p>
-          <p>2000/06/20</p>
-          <div>
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
-          </div>
-        </div>
-        <div id="clienteTableDown">
-          <p>Irineu</p>
-          <p>Rua ali</p>
-          <p>000.000.000-00</p>
-          <p>2000/06/20</p>
-          <div>
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
-          </div>
-        </div>
-        <div id="clienteTableDown">
-          <p>Irineu</p>
-          <p>Rua ali</p>
-          <p>000.000.000-00</p>
-          <p>2000/06/20</p>
-          <div>
-          <button className="buttonED"><AiFillEdit /></button>
-          <button className="buttonED"><AiFillDelete /></button>
+          <button className="buttonED" /*onClick={() => handleEdit(produto.id)}*/><AiFillEdit /></button>
+          <button className="buttonED" /*onClick={() => handleDelete(produto.id)}*/><AiFillDelete /></button>
           </div>
         </div>
       </section>
