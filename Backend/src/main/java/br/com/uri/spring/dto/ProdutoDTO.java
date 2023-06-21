@@ -3,11 +3,12 @@ package br.com.uri.spring.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class ProdutoDTO {
 
-    @NotBlank
+    @NotNull
     private long CodigoDeBarras;
 
     @NotBlank
@@ -16,9 +17,9 @@ public class ProdutoDTO {
     @NotBlank
     private String Descricao;
 
-    @NotBlank
+    @NotNull
     private long Quantidade;
 
-    @NotBlank
+    @NotNull
     private float PrecoUnit;
 }

@@ -1,6 +1,5 @@
 package br.com.uri.spring.service;
 
-import br.com.uri.spring.dto.ProdutoDTO;
 import br.com.uri.spring.dto.VendaDTO;
 import br.com.uri.spring.entities.ClienteEntity;
 import br.com.uri.spring.entities.ProdutoEntity;
@@ -10,18 +9,30 @@ import br.com.uri.spring.repositories.ProdutoRepository;
 import br.com.uri.spring.repositories.VendaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class VendaService {
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final ProdutoRepository produtoRepository;
+    private final VendaRepository vendaRepository;
 
-    private VendaRepository vendaRepository;
-
-    private ProdutoRepository produtoRepository;
-
-    public VendaService(ClienteRepository clienteRepository, ProdutoRepository produtoRepository){
+    public VendaService(ClienteRepository clienteRepository, ProdutoRepository produtoRepository, VendaRepository vendaRepository) {
         this.clienteRepository = clienteRepository;
         this.produtoRepository = produtoRepository;
+        this.vendaRepository = vendaRepository;
     }
+
+    public VendaEntity getOneObject(Long id) {
+        return vendaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Produto não encontrado"));
+    }
+
+    public List<VendaEntity> getAllObjects() {
+        return vendaRepository.findAll();
+    }
+
     public void saveObject(VendaDTO vendaDTO){
         VendaEntity vendaEntity = new VendaEntity();
 
