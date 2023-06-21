@@ -17,12 +17,12 @@ export function Inputs(props) {
     <div id={props.containerType}>
       <label className="labelInput">{props.labelText}</label>
       <input
+        id="inputPrincipal"
         type={props.inputType}
         value={value}
-        id={props.inputId}
         placeholder={props.placehInput}
-        onChange={handleInputChange}
-        className={!isValid || !isInputValid() ? 'invalid' : ''}
+        // onChange={handleInputChange}
+        // className={!isValid || !isInputValid() ? 'invalid' : ''}
       />
       {!isValid && <span className="basicError">{errorMessage}</span>}
     </div>
