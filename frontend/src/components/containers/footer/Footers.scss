@@ -15,4 +15,8 @@ footer{
   #footerLink{
     color: #DDDDDD;
     transition: 0.5s;
+    &:hover{
+      font-weight: 800;
+      color: #FFFFFF;
+    }
   }

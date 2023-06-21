@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { AiOutlinePlus} from 'react-icons/ai';
 import './Vendas.scss';
 
@@ -8,9 +9,13 @@ export const Vendas = () => {
   const [name, setName] = useState('');
   const [codigo, setCodigo] = useState('');
   const [quantidade, setQuantidade] = useState('');
+  const [precoUnit, setPrecoUnit] = useState('');
+  const [precoTotal, setPrecoTotal] = useState('');
   const [isValidName, setIsValidName] = useState(true);
   const [isValidCodigo, setIsValidCodigo] = useState(true);
   const [isValidQuantidade, setIsValidQuantidade] = useState(true);
+  const [isValidPrecoUnit, setIsValidPrecoUnit] = useState(true);
+  const [isValidPrecoTotal, setIsValidPrecoTotal] = useState(true);
 
   const handleNameChange = (value) => {
     setName(value);
@@ -24,7 +29,15 @@ export const Vendas = () => {
     setQuantidade(value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handlePrecoUnitChange = (value) => {
+    setPrecoUnit(value);
+  };
+
+  const handlePrecoTotalChange = (value) => {
+    setPrecoTotal(value);
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
@@ -39,8 +52,30 @@ export const Vendas = () => {
     const isValidQuantidadeInput = quantidadeRegex.test(quantidade);
     setIsValidQuantidade(isValidQuantidadeInput);
 
-    if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput) {
-      console.log("bombou")
+    const precoUnitRegex = /^(?!\s*$).+/;
+    const isValidPrecoUnitInput = precoUnitRegex.test(precoUnit);
+    setIsValidPrecoUnit(isValidPrecoUnitInput);
+
+    const precoTotalRegex = /^(?!\s*$).+/;
+    const isValidPrecoTotalInput = precoTotalRegex.test(precoTotal);
+    setIsValidPrecoTotal(isValidPrecoTotalInput);
+
+    if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput && isValidPrecoUnitInput && isValidPrecoTotalInput) {
+      try {
+        const response = await axios.post('URL_DO_BACKEND', {
+          name,
+          codigo,
+          quantidade,
+          precoUnit,
+          precoTotal,
+        });
+  
+        window.alert('Dados enviados com sucesso');
+        // Você pode tratar a resposta do backend aqui, se necessário
+  
+      } catch (error) {
+        window.alert('Erro ao enviar dados para o backend:', error);
+      }
     }
   }
 
@@ -91,13 +126,24 @@ export const Vendas = () => {
             inputType="number"
             inputId="bigInput"
             placehInput="PrecoUnit"
+            readOnly = {false}
             containerType="bigContainer"
+            value={precoUnit}
+            onChange={handlePrecoUnitChange}
+            regex={/^(?!\s*$).+/}
+            isValid={isValidPrecoUnit}
           />
           <Inputs
             labelText="Preco Total"
             inputType="number"
             inputId="bigInput"
+            placehInput="PrecoTotal"
+            readOnly = {false}
             containerType="bigContainer"
+            value={precoTotal}
+            onChange={handlePrecoTotalChange}
+            regex={/^(?!\s*$).+/}
+            isValid={isValidPrecoTotal}
           />
         </div>
         <button id="botaoCliente" onClick={handleFormSubmit}>Adicionar <AiOutlinePlus/></button>

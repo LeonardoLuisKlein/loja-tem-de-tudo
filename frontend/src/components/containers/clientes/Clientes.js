@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { AiOutlinePlus, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import './Clientes.scss'
 
@@ -27,10 +28,9 @@ export const Clientes = () => {
 
   const handleDataNaChange = (value) => {
     setDatana(value);
-    console.log(datana)
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
@@ -46,7 +46,20 @@ export const Clientes = () => {
     setIsValidCPF(isValidCPFInput);
 
     if (isValidNameInput && isValidEnderecoInput && isValidCPFInput) {
-      console.log("bombou")
+      try {
+        const response = await axios.post('URL_DO_BACKEND', {
+          name,
+          endereco,
+          CPF,
+          datana,
+        });
+  
+        window.alert('Dados enviados com sucesso');
+        // Você pode tratar a resposta do backend aqui, se necessário
+  
+      } catch (error) {
+        window.alert('Erro ao enviar dados para o backend:', error);
+      }
     }
   }
 

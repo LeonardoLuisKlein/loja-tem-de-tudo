@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { AiOutlinePlus, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import './Produtos.scss'
 
@@ -36,7 +37,7 @@ export const Produtos = () => {
     setPrecoUnit(value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
@@ -60,7 +61,20 @@ export const Produtos = () => {
     setIsValidPrecoUnit(isValidPrecoUnitInput);
 
     if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput && isValidDescricaoInput && isValidPrecoUnitInput) {
-      console.log("bombou")
+      try {
+        const response = await axios.post('URL_DO_BACKEND', {
+          name,
+          quantidade,
+          descricao,
+          precoUnit,
+        });
+  
+        window.alert('Dados enviados com sucesso');
+        // Você pode tratar a resposta do backend aqui, se necessário
+  
+      } catch (error) {
+        window.alert('Erro ao enviar dados para o backend:', error);
+      }
     }
   }
 
