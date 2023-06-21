@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AiOutlinePlus, AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { AiOutlinePlus} from 'react-icons/ai';
 import './Vendas.scss';
 
 import { Inputs } from "../../micro/inputs/Inputs";

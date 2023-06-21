@@ -5,6 +5,51 @@ import './Clientes.scss'
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Clientes = () => {
+  const [name, setName] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [CPF, setCPF] = useState('');
+  const [datana, setDatana] = useState('');
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidEndereco, setIsValidEndereco] = useState(true);
+  const [isValidCPF, setIsValidCPF] = useState(true);
+
+  const handleNameChange = (value) => {
+    setName(value);
+  };
+
+  const handleEnderecoChange = (value) => {
+    setEndereco(value);
+  };
+
+  const handleCPFChange = (value) => {
+    setCPF(value);
+  };
+
+  const handleDataNaChange = (value) => {
+    setDatana(value);
+    console.log(datana)
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const isValidNameInput = nameRegex.test(name);
+    setIsValidName(isValidNameInput);
+
+    const enderecoRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const isValidEnderecoInput = enderecoRegex.test(endereco);
+    setIsValidEndereco(isValidEnderecoInput);
+
+    const CPFRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+    const isValidCPFInput = CPFRegex.test(CPF);
+    setIsValidCPF(isValidCPFInput);
+
+    if (isValidNameInput && isValidEnderecoInput && isValidCPFInput) {
+      console.log("bombou")
+    }
+  }
+
   return (
     <div id="clientesForm">
       <h1>Clientes</h1>
@@ -18,6 +63,10 @@ export const Clientes = () => {
             placehInput="Nome"
             errorMessage="Nome inválido"
             containerType="bigContainer"
+            value={name}
+            onChange={handleNameChange}
+            regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+            isValid={isValidName}
           />
           <Inputs
             labelText="Endereco"
@@ -26,24 +75,33 @@ export const Clientes = () => {
             placehInput="Email"
             errorMessage="Endereco inválido"
             containerType="bigContainer"
+            value={endereco}
+            onChange={handleEnderecoChange} 
+            regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+            isValid={isValidEndereco}
           />
           <Inputs
             labelText="CPF"
-            inputType="number"
+            inputType="text"
             inputId="bigInput"
             placehInput="CPF"
             errorMessage="CPF inválido"
             containerType="bigContainer"
+            value={CPF}
+            onChange={handleCPFChange}
+            regex={/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/}
+            isValid={isValidCPF}
           />
           <Inputs
             labelText="Data Nasc"
             inputType="date"
             inputId="bigInput"
-            errorMessage="Data inválida"
             containerType="bigContainer"
+            value={datana}
+            onChange={handleDataNaChange}
           />
         </div>
-        <button id="botaoCliente">Adicionar <AiOutlinePlus/></button>
+        <button id="botaoCliente" onClick={handleFormSubmit}>Adicionar <AiOutlinePlus/></button>
       </form>
       <section id="tabelansky">
         <div id="clienteTableUp">
@@ -51,6 +109,46 @@ export const Clientes = () => {
           <p>Endereco</p>
           <p>CPF</p>
           <p>Data Nasc</p>
+        </div>
+        <div id="clienteTableDown">
+          <p>Irineu</p>
+          <p>Rua ali</p>
+          <p>000.000.000-00</p>
+          <p>2000/06/20</p>
+          <div>
+          <button className="buttonED"><AiFillEdit /></button>
+          <button className="buttonED"><AiFillDelete /></button>
+          </div>
+        </div>
+        <div id="clienteTableDown">
+          <p>Irineu</p>
+          <p>Rua ali</p>
+          <p>000.000.000-00</p>
+          <p>2000/06/20</p>
+          <div>
+          <button className="buttonED"><AiFillEdit /></button>
+          <button className="buttonED"><AiFillDelete /></button>
+          </div>
+        </div>
+        <div id="clienteTableDown">
+          <p>Irineu</p>
+          <p>Rua ali</p>
+          <p>000.000.000-00</p>
+          <p>2000/06/20</p>
+          <div>
+          <button className="buttonED"><AiFillEdit /></button>
+          <button className="buttonED"><AiFillDelete /></button>
+          </div>
+        </div>
+        <div id="clienteTableDown">
+          <p>Irineu</p>
+          <p>Rua ali</p>
+          <p>000.000.000-00</p>
+          <p>2000/06/20</p>
+          <div>
+          <button className="buttonED"><AiFillEdit /></button>
+          <button className="buttonED"><AiFillDelete /></button>
+          </div>
         </div>
         <div id="clienteTableDown">
           <p>Irineu</p>

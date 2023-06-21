@@ -21,8 +21,8 @@ export function Inputs(props) {
         type={props.inputType}
         value={value}
         placeholder={props.placehInput}
-        // onChange={handleInputChange}
-        // className={!isValid || !isInputValid() ? 'invalid' : ''}
+        onChange={handleInputChange}
+        className={!isValid || !isInputValid() ? 'invalid' : ''}
       />
       {!isValid && <span className="basicError">{errorMessage}</span>}
     </div>
