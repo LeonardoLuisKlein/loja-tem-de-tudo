@@ -5,6 +5,45 @@ import './Vendas.scss';
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Vendas = () => {
+  const [name, setName] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [quantidade, setQuantidade] = useState('');
+  const [isValidName, setIsValidName] = useState(true);
+  const [isValidCodigo, setIsValidCodigo] = useState(true);
+  const [isValidQuantidade, setIsValidQuantidade] = useState(true);
+
+  const handleNameChange = (value) => {
+    setName(value);
+  };
+
+  const handleCodigoChange = (value) => {
+    setCodigo(value);
+  };
+
+  const handleQuantidadeChange = (value) => {
+    setQuantidade(value);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const isValidNameInput = nameRegex.test(name);
+    setIsValidName(isValidNameInput);
+
+    const codigoRegex = /^(?!\s*$).+/;
+    const isValidCodigoInput = codigoRegex.test(codigo);
+    setIsValidCodigo(isValidCodigoInput);
+
+    const quantidadeRegex = /^(?!\s*$).+/;
+    const isValidQuantidadeInput = quantidadeRegex.test(quantidade);
+    setIsValidQuantidade(isValidQuantidadeInput);
+
+    if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput) {
+      console.log("bombou")
+    }
+  }
+
   return (
     <div id="clientesForm">
       <h1>Vendas</h1>
@@ -18,6 +57,10 @@ export const Vendas = () => {
             placehInput="Nome"
             errorMessage="Nome inválido"
             containerType="bigContainer"
+            value={name}
+            onChange={handleNameChange}
+            regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+            isValid={isValidName}
           />
           <Inputs
             labelText="Código"
@@ -26,6 +69,10 @@ export const Vendas = () => {
             placehInput="Código"
             errorMessage="Código inválido"
             containerType="bigContainer"
+            value={codigo}
+            onChange={handleCodigoChange}
+            regex={/^(?!\s*$).+/}
+            isValid={isValidCodigo}
           />
           <Inputs
             labelText="Quantidade"
@@ -34,24 +81,26 @@ export const Vendas = () => {
             placehInput="Quantidade"
             errorMessage="Quantidade inválida"
             containerType="bigContainer"
+            value={quantidade}
+            onChange={handleQuantidadeChange}
+            regex={/^(?!\s*$).+/}
+            isValid={isValidQuantidade}
           />
           <Inputs
             labelText="Preco Unit"
             inputType="number"
             inputId="bigInput"
             placehInput="PrecoUnit"
-            errorMessage="PrecoUnit inválido"
             containerType="bigContainer"
           />
           <Inputs
             labelText="Preco Total"
             inputType="number"
             inputId="bigInput"
-            errorMessage="Preco total inválido"
             containerType="bigContainer"
           />
         </div>
-        <button id="botaoCliente">Adicionar <AiOutlinePlus/></button>
+        <button id="botaoCliente" onClick={handleFormSubmit}>Adicionar <AiOutlinePlus/></button>
       </form>
       <section id="tabelansky">
         <div id="clienteTableUp">
