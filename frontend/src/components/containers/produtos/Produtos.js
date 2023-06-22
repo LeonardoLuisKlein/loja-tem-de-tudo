@@ -41,7 +41,7 @@ export const Produtos = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const nameRegex = /^(?!\s*$).+/;
     const isValidNameInput = nameRegex.test(name);
     setIsValidName(isValidNameInput);
 
@@ -63,16 +63,28 @@ export const Produtos = () => {
 
     if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput && isValidDescricaoInput && isValidPrecoUnitInput) {
       const novoProduto = {
-        id: produtos.length + 1,
-        codigo,
-        nome: name,
-        preco: precoUnit,
-        quantidade,
-        descricao,
+        CodigoDeBarras: parseInt(codigo),
+        NomeProduto: name,
+        Descricao: descricao,
+        Quantidade: parseInt(quantidade),
+        PrecoUnit: parseFloat(precoUnit)
       };
-  
-      setProdutos([...produtos, novoProduto]);
-      window.alert('Dados enviados com sucesso');
+
+      console.log('Dados a serem enviados:', novoProduto);
+
+      try {
+        // Fazendo a solicitação POST ao backend
+        const response = await axios.post('http://localhost:8080/v1/produtos', novoProduto);
+        console.log(response.data); // Resposta do backend (opcional)
+
+        setProdutos([...produtos, novoProduto]);
+        window.alert('Dados enviados com sucesso');
+      } catch (error) {
+        console.error(error);
+        // Lógica para lidar com o erro da solicitação
+        window.alert('Poblema');
+        console.log(error.response.data);
+      }
     }
   }
 
@@ -98,7 +110,7 @@ export const Produtos = () => {
       <div id="inputsContainer">
         <Inputs
             labelText="Código de Barras"
-            inputType="text"
+            inputType="number"
             inputId="bigInput"
             placehInput="Cod Barras"
             errorMessage="Codigo inválido"
@@ -117,7 +129,7 @@ export const Produtos = () => {
             containerType="bigContainer"
             value={name}
             onChange={handleNameChange}
-            regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+            regex={/^(?!\s*$).+/}
             isValid={isValidName}
           />
           <Inputs
@@ -151,6 +163,7 @@ export const Produtos = () => {
             placehInput="Preco Unit"
             errorMessage="Preco inválido"
             containerType="bigContainer"
+
             value={precoUnit}
             onChange={handlePrecoUnitChange}
             regex={/^(?!\s*$).+/}

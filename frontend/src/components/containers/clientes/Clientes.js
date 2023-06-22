@@ -6,10 +6,11 @@ import './Clientes.scss'
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Clientes = () => {
-  const [name, setName] = useState('');
+  const [nome, setName] = useState('');
   const [endereco, setEndereco] = useState('');
   const [CPF, setCPF] = useState('');
-  const [datana, setDatana] = useState('');
+  const [dataNasc, setDatana] = useState('');
+  const [clientes, setClientes] = useState([]);
   const [isValidName, setIsValidName] = useState(true);
   const [isValidEndereco, setIsValidEndereco] = useState(true);
   const [isValidCPF, setIsValidCPF] = useState(true);
@@ -33,9 +34,9 @@ export const Clientes = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-    const isValidNameInput = nameRegex.test(name);
-    setIsValidName(isValidNameInput);
+    const nomeRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const isValidNomeInput = nomeRegex.test(nome);
+    setIsValidName(isValidNomeInput);
 
     const enderecoRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
     const isValidEnderecoInput = enderecoRegex.test(endereco);
@@ -45,20 +46,27 @@ export const Clientes = () => {
     const isValidCPFInput = CPFRegex.test(CPF);
     setIsValidCPF(isValidCPFInput);
 
-    if (isValidNameInput && isValidEnderecoInput && isValidCPFInput) {
+    if (isValidNomeInput && isValidEnderecoInput && isValidCPFInput) {
+      const novoCliente = {
+        nome,
+        endereco,
+        CPF,
+        dataNasc
+      };
+
+      console.log('Dados a serem enviados:', novoCliente);
+
       try {
-        const response = await axios.post('URL_DO_BACKEND', {
-          name,
-          endereco,
-          CPF,
-          datana,
-        });
-  
+        // Fazendo a solicitação POST ao backend
+        const response = await axios.post('http://localhost:8080/v1/clientes', novoCliente);
+        console.log(response.data); // Resposta do backend (opcional)
+        setClientes([...clientes, novoCliente]);
         window.alert('Dados enviados com sucesso');
-        // Você pode tratar a resposta do backend aqui, se necessário
-  
       } catch (error) {
-        window.alert('Erro ao enviar dados para o backend:', error);
+        console.error(error);
+        // Lógica para lidar com o erro da solicitação
+        window.alert('Poblema');
+        console.log(error.response.data);
       }
     }
   }
@@ -90,7 +98,7 @@ export const Clientes = () => {
             placehInput="Nome"
             errorMessage="Nome inválido"
             containerType="bigContainer"
-            value={name}
+            value={nome}
             onChange={handleNameChange}
             regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
             isValid={isValidName}
@@ -124,7 +132,7 @@ export const Clientes = () => {
             inputType="date"
             inputId="bigInput"
             containerType="bigContainer"
-            value={datana}
+            value={dataNasc}
             onChange={handleDataNaChange}
           />
         </div>
