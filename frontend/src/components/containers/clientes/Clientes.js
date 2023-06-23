@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { AiOutlinePlus, AiFillDelete, AiFillEdit } from 'react-icons/ai';
-import './Clientes.scss'
+import axios from "axios";
+import { AiOutlinePlus, AiFillDelete, AiFillEdit } from "react-icons/ai";
+import "./Clientes.scss";
 
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Clientes = () => {
-  const [nome, setName] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [CPF, setCPF] = useState('');
-  const [dataNasc, setDatana] = useState('');
+  const [nome, setName] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [CPF, setCPF] = useState("");
+  const [dataNasc, setDatana] = useState("");
   const [clientes, setClientes] = useState([]);
   const [isValidName, setIsValidName] = useState(true);
   const [isValidEndereco, setIsValidEndereco] = useState(true);
@@ -18,7 +18,7 @@ export const Clientes = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/v1/clientes');
+      const response = await axios.get("http://localhost:8080/v1/clientes");
       const clientesData = response.data; // Dados retornados pelo backend
       setClientes(clientesData); // Atualiza o estado global com os dados do backend
       console.log(clientesData); // Exibe os dados no console ou realiza outras operações necessárias
@@ -50,11 +50,13 @@ export const Clientes = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const nomeRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const nomeRegex =
+      /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
     const isValidNomeInput = nomeRegex.test(nome);
     setIsValidName(isValidNomeInput);
 
-    const enderecoRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    const enderecoRegex =
+      /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
     const isValidEnderecoInput = enderecoRegex.test(endereco);
     setIsValidEndereco(isValidEnderecoInput);
 
@@ -67,15 +69,18 @@ export const Clientes = () => {
         nome,
         endereco,
         cpf: CPF,
-        dataNasc
+        dataNasc,
       };
 
-      console.log('Dados a serem enviados:', novoCliente);
+      console.log("Dados a serem enviados:", novoCliente);
 
       try {
         if (editClientId) {
           // Atualizar cliente existente
-          await axios.put(`http://localhost:8080/v1/clientes/${editClientId}`, novoCliente);
+          await axios.put(
+            `http://localhost:8080/v1/clientes/${editClientId}`,
+            novoCliente
+          );
           const updatedClientes = clientes.map((cliente) => {
             if (cliente.id_Cliente === editClientId) {
               return { ...cliente, ...novoCliente };
@@ -83,34 +88,39 @@ export const Clientes = () => {
             return cliente;
           });
           setClientes(updatedClientes);
-          window.alert('Dados atualizados com sucesso');
+          window.alert("Dados atualizados com sucesso");
         } else {
           // Criar novo cliente
-          const response = await axios.post('http://localhost:8080/v1/clientes', novoCliente);
+          const response = await axios.post(
+            "http://localhost:8080/v1/clientes",
+            novoCliente
+          );
           console.log(response.data); // Resposta do backend (opcional)
           setClientes([...clientes, response.data]);
-          window.alert('Dados enviados com sucesso');
+          window.alert("Dados enviados com sucesso");
         }
       } catch (error) {
         console.error(error);
         // Lógica para lidar com o erro da solicitação
-        window.alert('Erro ao enviar dados para o backend');
+        window.alert("Erro ao enviar dados para o backend");
         console.log(error.response.data);
       }
     }
 
     // Limpar os campos do formulário e remover o ID do cliente em edição
-    setName('');
-    setEndereco('');
-    setCPF('');
-    setDatana('');
+    setName("");
+    setEndereco("");
+    setCPF("");
+    setDatana("");
     setEditClientId(null);
-  }
+  };
 
   const handleDeleteCliente = async (clienteId) => {
     try {
       await axios.delete(`http://localhost:8080/v1/clientes/${clienteId}`);
-      const updatedClientes = clientes.filter((cliente) => cliente.id_Cliente !== clienteId);
+      const updatedClientes = clientes.filter(
+        (cliente) => cliente.id_Cliente !== clienteId
+      );
       setClientes(updatedClientes);
       window.alert("Sucesso ao deletar");
     } catch (error) {
@@ -122,7 +132,9 @@ export const Clientes = () => {
   };
 
   const handleEditCliente = (clienteId) => {
-    const cliente = clientes.find((cliente) => cliente.id_Cliente === clienteId);
+    const cliente = clientes.find(
+      (cliente) => cliente.id_Cliente === clienteId
+    );
     if (cliente) {
       setName(cliente.nome);
       setEndereco(cliente.endereco);
@@ -147,7 +159,9 @@ export const Clientes = () => {
               containerType="bigContainer"
               value={nome}
               onChange={handleNameChange}
-              regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+              regex={
+                /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+              }
               isValid={isValidName}
             />
             <Inputs
@@ -159,7 +173,9 @@ export const Clientes = () => {
               containerType="bigContainer"
               value={endereco}
               onChange={handleEnderecoChange}
-              regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
+              regex={
+                /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+              }
               isValid={isValidEndereco}
             />
             <Inputs
@@ -184,36 +200,38 @@ export const Clientes = () => {
             />
           </div>
           <button id="botaoCliente" onClick={handleFormSubmit}>
-            {editClientId ? 'Editar' : 'Adicionar'} <AiOutlinePlus />
+            {editClientId ? "Editar" : "Adicionar"} <AiOutlinePlus />
           </button>
         </form>
-        <table id="tabelaPrincipal">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Endereço</th>
-              <th>Data de Nascimento</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientes.map((cliente) => (
-              <tr key={cliente.id_Cliente}>
-                <td>{cliente.nome}</td>
-                <td>{cliente.endereco}</td>
-                <td>{cliente.dataNasc}</td>
-                <td>
-                  <button onClick={() => handleDeleteCliente(cliente.id_Cliente)}>
-                    <AiFillDelete />
-                  </button>
-                  <button onClick={() => handleEditCliente(cliente.id_Cliente)}>
-                    <AiFillEdit />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <section id="tabelansky">
+          <div id="clienteTableUp">
+            <p>Nome</p>
+            <p>Endereco</p>
+            <p>Data Nasc</p>
+            <p>Ações</p>
+          </div>
+          {clientes.map((cliente) => (
+            <div key={cliente.id_Cliente} id="clienteTableDown">
+              <p>{cliente.nome}</p>
+              <p>{cliente.endereco}</p>
+              <p>{cliente.dataNasc}</p>
+              <div id="edit">
+                <button
+                  className="buttonED"
+                  onClick={() => handleEditCliente(cliente.id_Cliente)}
+                >
+                  <AiFillEdit />
+                </button>
+                <button
+                  className="buttonED"
+                  onClick={() => handleDeleteCliente(cliente.id_Cliente)}
+                >
+                  <AiFillDelete />
+                </button>
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
     </div>
   );

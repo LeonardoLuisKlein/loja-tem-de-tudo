@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { AiOutlinePlus, AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import './Produtos.scss'
@@ -6,8 +6,8 @@ import './Produtos.scss'
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Produtos = () => {
-  const [name, setName] = useState('');
-  const [codigo, setCodigo] = useState('');
+  const [nomeProduto, setName] = useState('');
+  const [codigoDeBarras, setCodigo] = useState('');
   const [quantidade, setQuantidade] = useState('');
   const [descricao, setDescricao] = useState('');
   const [precoUnit, setPrecoUnit] = useState('');
@@ -17,6 +17,21 @@ export const Produtos = () => {
   const [isValidQuantidade, setIsValidQuantidade] = useState(true);
   const [isValidDescricao, setIsValidDescricao] = useState(true);
   const [isValidPrecoUnit, setIsValidPrecoUnit] = useState(true);
+  
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/v1/produtos');
+      const produtosData = response.data; // Dados retornados pelo backend
+      setProdutos(produtosData); // Atualiza o estado global com os dados do backend
+      console.log(produtosData); // Exibe os dados no console ou realiza outras operações necessárias
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleNameChange = (value) => {
     setName(value);
@@ -42,11 +57,11 @@ export const Produtos = () => {
     e.preventDefault();
 
     const nameRegex = /^(?!\s*$).+/;
-    const isValidNameInput = nameRegex.test(name);
+    const isValidNameInput = nameRegex.test(nomeProduto);
     setIsValidName(isValidNameInput);
 
     const codigoRegex = /^(?!\s*$).+/;
-    const isValidCodigoInput = codigoRegex.test(codigo);
+    const isValidCodigoInput = codigoRegex.test(codigoDeBarras);
     setIsValidCodigo(isValidCodigoInput);
 
     const quantidadeRegex = /^(?!\s*$).+/;
@@ -63,11 +78,11 @@ export const Produtos = () => {
 
     if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput && isValidDescricaoInput && isValidPrecoUnitInput) {
       const novoProduto = {
-        CodigoDeBarras: parseInt(codigo),
-        NomeProduto: name,
-        Descricao: descricao,
-        Quantidade: parseInt(quantidade),
-        PrecoUnit: parseFloat(precoUnit)
+        codigoDeBarras: parseInt(codigoDeBarras),
+        nomeProduto: nomeProduto,
+        descricao: descricao,
+        quantidade: parseInt(quantidade),
+        precoUnit: parseFloat(precoUnit)
       };
 
       console.log('Dados a serem enviados:', novoProduto);
@@ -76,13 +91,12 @@ export const Produtos = () => {
         // Fazendo a solicitação POST ao backend
         const response = await axios.post('http://localhost:8080/v1/produtos', novoProduto);
         console.log(response.data); // Resposta do backend (opcional)
-
         setProdutos([...produtos, novoProduto]);
         window.alert('Dados enviados com sucesso');
       } catch (error) {
         console.error(error);
         // Lógica para lidar com o erro da solicitação
-        window.alert('Poblema');
+        window.alert('Erro ao enviar dados para o backend');
         console.log(error.response.data);
       }
     }
@@ -94,12 +108,17 @@ export const Produtos = () => {
     console.log(`Editar produto com ID: ${productId}`);
   };
   
-  const handleDelete = (productId) => {
-    // Lógica para lidar com a exclusão do produto com o ID fornecido
-    // Remova o produto do estado "produtos"
-    const updatedProdutos = produtos.filter((produto) => produto.id !== productId);
-    setProdutos(updatedProdutos);
-    console.log(`Excluir produto com ID: ${productId}`);
+  const handleDelete = async (codigoDeBarras) => {
+    try {
+      await axios.delete(`http://localhost:8080/v1/produtos/${codigoDeBarras}`);
+      const updatedProdutos = produtos.filter((produto) => produto.codigoDeBarras !== codigoDeBarras);
+      setProdutos(updatedProdutos);
+      window.alert('Deu bão');
+      console.log(`Excluir produto com código de barras: ${codigoDeBarras}`);
+    } catch (error) {
+      window.alert('Erro ao enviar dados para o backend');
+      console.error(error);
+    }
   };
 
   return (
@@ -115,7 +134,7 @@ export const Produtos = () => {
             placehInput="Cod Barras"
             errorMessage="Codigo inválido"
             containerType="bigContainer"
-            value={codigo}
+            value={codigoDeBarras}
             onChange={handleCodigoChange}
             regex={/^(?!\s*$).+/}
             isValid={isValidCodigo}
@@ -127,7 +146,7 @@ export const Produtos = () => {
             placehInput="Produto"
             errorMessage="Produto inválido"
             containerType="bigContainer"
-            value={name}
+            value={nomeProduto}
             onChange={handleNameChange}
             regex={/^(?!\s*$).+/}
             isValid={isValidName}
@@ -180,17 +199,17 @@ export const Produtos = () => {
           <p>Quantidade</p>
         </div>
         {produtos.map((produto) => (
-        <div key={produto.id} id="clienteTableDown">
-          <p>{produto.codigo}</p>
-          <p>{produto.nome}</p>
-          <p>{produto.preco}</p>
-          <p>{produto.quantidade}</p>
-          <div id="edit">
-          <button className="buttonED" onClick={() => handleEdit(produto.id)}><AiFillEdit /></button>
-          <button className="buttonED" onClick={() => handleDelete(produto.id)}><AiFillDelete /></button>
-          </div>
-        </div>
-        ))}
+  <div key={produto.codigoDeBarras} id="clienteTableDown">
+    <p>{produto.codigoDeBarras}</p>
+    <p>{produto.nomeProduto}</p>
+    <p>{produto.precoUnit}</p>
+    <p>{produto.quantidade}</p>
+    <div id="edit">
+      <button className="buttonED" onClick={() => handleEdit(produto.codigoDeBarras)}><AiFillEdit /></button>
+      <button className="buttonED" onClick={() => handleDelete(produto.codigoDeBarras)}><AiFillDelete /></button>
+    </div>
+  </div>
+))}
       </section>
       </div>
     </div>
