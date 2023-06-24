@@ -2,7 +2,7 @@ import React from 'react';
 import './Inputs.scss'
 
 export function Inputs(props) {
-  const { regex, errorMessage, isValid, value, onChange } = props;
+  const { regex, errorMessage, isValid, value, onChange, readOnly } = props;
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
@@ -21,6 +21,7 @@ export function Inputs(props) {
         type={props.inputType}
         value={value}
         placeholder={props.placehInput}
+        readOnly={props.readOnly} // Adicione a propriedade readOnly aqui
         onChange={handleInputChange}
         className={!isValid || !isInputValid() ? 'invalid' : ''}
       />

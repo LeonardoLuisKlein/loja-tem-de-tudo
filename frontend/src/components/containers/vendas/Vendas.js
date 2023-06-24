@@ -1,47 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { AiOutlinePlus} from 'react-icons/ai';
 import './Vendas.scss';
 
 import { Inputs } from "../../micro/inputs/Inputs";
 
 export const Vendas = () => {
-  const [name, setName] = useState('');
-  const [codigo, setCodigo] = useState('');
+  const [idCliente, setIdCliente] = useState('');
+  const [codigoDeBarras, setCodigoDeBarras] = useState('');
   const [quantidade, setQuantidade] = useState('');
-  const [isValidName, setIsValidName] = useState(true);
-  const [isValidCodigo, setIsValidCodigo] = useState(true);
-  const [isValidQuantidade, setIsValidQuantidade] = useState(true);
+  const [precoUnit, setPrecoUnit] = useState('');
+  const [clientes, setClientes] = useState('');
+  const [produtos, setProdutos] = useState('');
+  const [vendas, setVendas] = useState('');
 
-  const handleNameChange = (value) => {
-    setName(value);
+  const fetchData = async () => {
+    try {
+      const clientesResponse = await axios.get("http://localhost:8080/v1/clientes");
+      const clientesData = clientesResponse.data; // Dados dos clientes retornados pelo backend
+  
+      const produtosResponse = await axios.get("http://localhost:8080/v1/produtos");
+      const produtosData = produtosResponse.data; // Dados dos produtos retornados pelo backend
+  
+      const vendasResponse = await axios.get("http://localhost:8080/v1/vendas");
+      const vendasData = produtosResponse.data; // Dados dos produtos retornados pelo backend
+
+      setClientes(clientesData); // Atualiza o estado global com os dados dos clientes
+      setProdutos(produtosData);
+      setVendas(vendasData) // Atualiza o estado global com os dados dos produtos
+  
+      console.log(clientesData); // Exibe os dados dos clientes no console ou realiza outras operações necessárias
+      console.log(produtosData);
+      console.log(vendasData) // Exibe os dados dos produtos no console ou realiza outras operações necessárias
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleCodigoChange = (value) => {
-    setCodigo(value);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleIdClienteChange = (value) => {
+    setIdCliente(value);
+  };
+
+  const handleCodigoDeBarrasChange = (value) => {
+    setCodigoDeBarras(value);
   };
 
   const handleQuantidadeChange = (value) => {
     setQuantidade(value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handlePrecoUnitChange = (value) => {
+    setPrecoUnit(value);
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    const nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-    const isValidNameInput = nameRegex.test(name);
-    setIsValidName(isValidNameInput);
-
-    const codigoRegex = /^(?!\s*$).+/;
-    const isValidCodigoInput = codigoRegex.test(codigo);
-    setIsValidCodigo(isValidCodigoInput);
-
-    const quantidadeRegex = /^(?!\s*$).+/;
-    const isValidQuantidadeInput = quantidadeRegex.test(quantidade);
-    setIsValidQuantidade(isValidQuantidadeInput);
-
-    if (isValidNameInput && isValidCodigoInput && isValidQuantidadeInput) {
-      console.log("bombou")
-    }
+    const novaVenda = {
+      id_Cliente: idCliente,
+      codigoDeBarras,
+      quantidade,
+      precoUnit,
+    };
+      try {
+        const response = await axios.post("http://localhost:8080/v1/vendas", novaVenda);
+        console.log(response.data);
+        setVendas([...vendas, response.data]);
+        window.alert("Dados enviados com sucesso");
+        // Você pode tratar a resposta do backend aqui, se necessário
+      } catch (error) {
+        window.alert('Erro ao enviar dados para o backend:', error);
+      }
+    
   }
 
   return (
@@ -51,53 +84,40 @@ export const Vendas = () => {
       <form id="formPrincipal">
       <div id="inputsContainer">
         <Inputs
-            labelText="Nome"
-            inputType="text"
+            labelText="Id Cliente"
+            inputType="number"
             inputId="bigInput"
-            placehInput="Nome"
-            errorMessage="Nome inválido"
+            placehInput="Id Cliente"
             containerType="bigContainer"
-            value={name}
-            onChange={handleNameChange}
-            regex={/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/}
-            isValid={isValidName}
+            value={idCliente}
+            onChange={handleIdClienteChange}
           />
           <Inputs
-            labelText="Código"
-            inputType="text"
+            labelText="Codigo"
+            inputType="number"
             inputId="bigInput"
-            placehInput="Código"
-            errorMessage="Código inválido"
+            placehInput="Codigo"
             containerType="bigContainer"
-            value={codigo}
-            onChange={handleCodigoChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidCodigo}
+            value={codigoDeBarras}
+            onChange={handleCodigoDeBarrasChange}
           />
           <Inputs
             labelText="Quantidade"
-            inputType="number"
+            inputType="text"
             inputId="bigInput"
             placehInput="Quantidade"
-            errorMessage="Quantidade inválida"
             containerType="bigContainer"
             value={quantidade}
             onChange={handleQuantidadeChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidQuantidade}
           />
           <Inputs
             labelText="Preco Unit"
-            inputType="number"
+            inputType="text"
             inputId="bigInput"
-            placehInput="PrecoUnit"
+            placehInput="Preco"
             containerType="bigContainer"
-          />
-          <Inputs
-            labelText="Preco Total"
-            inputType="number"
-            inputId="bigInput"
-            containerType="bigContainer"
+            value={precoUnit}
+            onChange={handlePrecoUnitChange}
           />
         </div>
         <button id="botaoCliente" onClick={handleFormSubmit}>Adicionar <AiOutlinePlus/></button>
@@ -110,13 +130,13 @@ export const Vendas = () => {
           <p>Quantidade</p>
           <p>Preço total</p>
         </div>
-        <div id="clienteTableDown">
-          <p>1</p>
-          <p>Pedro</p>
-          <p>Pistola</p>
-          <p>1</p>
-          <p>R$ 20</p>
-        </div>
+        {/* {vendas.map((venda) => (
+            <div key={vendas.id_Venda} id="clienteTableDown">
+              <p>{vendas.id_Venda}</p>
+              <p>{vendas.nomeProduto}</p>
+              <p>{vendas.nomeCliente}</p>
+            </div>
+          ))} */}
       </section>
       </div>
     </div>

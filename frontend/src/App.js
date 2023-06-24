@@ -6,6 +6,7 @@ import { Vendas } from './components/containers/vendas/Vendas';
 import { Clientes } from './components/containers/clientes/Clientes';
 import { Produtos } from './components/containers/produtos/Produtos';
 import { Error404 } from './components/containers/error404/Error404';
+import { Buscar } from './components/containers/buscar/Buscar';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/vendas" element={<Vendas />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/produtos" element={<Produtos />} />
+          <Route path="/buscar" element={<Buscar />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </BrowserRouter>
