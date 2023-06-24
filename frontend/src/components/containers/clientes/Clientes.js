@@ -76,7 +76,6 @@ export const Clientes = () => {
 
       try {
         if (editClientId) {
-          // Atualizar cliente existente
           await axios.put(
             `http://localhost:8080/v1/clientes/${editClientId}`,
             novoCliente
@@ -90,29 +89,25 @@ export const Clientes = () => {
           setClientes(updatedClientes);
           window.alert("Dados atualizados com sucesso");
         } else {
-          // Criar novo cliente
           const response = await axios.post(
             "http://localhost:8080/v1/clientes",
             novoCliente
           );
-          console.log(response.data); // Resposta do backend (opcional)
+          console.log(response.data);
           setClientes([...clientes, response.data]);
           window.alert("Dados enviados com sucesso");
         }
       } catch (error) {
         console.error(error);
-        // Lógica para lidar com o erro da solicitação
         window.alert("Erro ao enviar dados para o backend");
         console.log(error.response.data);
       }
     }
-
-    // Limpar os campos do formulário e remover o ID do cliente em edição
-    setName("");
-    setEndereco("");
-    setCPF("");
-    setDatana("");
-    setEditClientId(null);
+      setName("");
+      setEndereco("");
+      setCPF("");
+      setDatana("");
+      setEditClientId(null);
   };
 
   const handleDeleteCliente = async (clienteId) => {
@@ -205,6 +200,7 @@ export const Clientes = () => {
         </form>
         <section id="tabelansky">
           <div id="clienteTableUp">
+            <p>Id</p>
             <p>Nome</p>
             <p>Endereco</p>
             <p>Data Nasc</p>
@@ -212,6 +208,7 @@ export const Clientes = () => {
           </div>
           {clientes.map((cliente) => (
             <div key={cliente.id_Cliente} id="clienteTableDown">
+              <p>{cliente.id_Cliente}</p>
               <p>{cliente.nome}</p>
               <p>{cliente.endereco}</p>
               <p>{cliente.dataNasc}</p>
