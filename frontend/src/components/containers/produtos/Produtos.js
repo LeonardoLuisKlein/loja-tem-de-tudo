@@ -17,6 +17,7 @@ export const Produtos = () => {
   const [isValidQuantidade, setIsValidQuantidade] = useState(true);
   const [isValidDescricao, setIsValidDescricao] = useState(true);
   const [isValidPrecoUnit, setIsValidPrecoUnit] = useState(true);
+  const [editProdutoId, setEditProdutoId] = useState(null);
   
   const fetchData = async () => {
     try {
@@ -88,27 +89,52 @@ export const Produtos = () => {
       console.log('Dados a serem enviados:', novoProduto);
 
       try {
-        // Fazendo a solicitação POST ao backend
+        if (editProdutoId) {
+          await axios.put(`http://localhost:8080/v1/produtos/${editProdutoId}`, novoProduto);
+          const updatedProdutos = produtos.map((produto) => {
+            if (produto.codigoDeBarras === editProdutoId) {
+              return { ...produto, ...novoProduto }
+            }
+            return produto;
+          });
+          setProdutos(updatedProdutos);
+          window.alert("Produto atualizado com sucesso");
+        } {
         const response = await axios.post('http://localhost:8080/v1/produtos', novoProduto);
-        console.log(response.data); // Resposta do backend (opcional)
+        console.log(response.data);
         setProdutos([...produtos, novoProduto]);
         window.alert('Dados enviados com sucesso');
+        }
       } catch (error) {
         console.error(error);
-        // Lógica para lidar com o erro da solicitação
         window.alert('Erro ao enviar dados para o backend');
         console.log(error.response.data);
       }
     }
+      setCodigo("")
+      setName("")
+      setQuantidade("")
+      setDescricao("")
+      setPrecoUnit("")
+      setEditProdutoId(null)
   }
 
-  const handleEdit = (productId) => {
-    // Lógica para lidar com a edição do produto com o ID fornecido
-    // Pode ser exibido um modal de edição, redirecionado para uma página de edição, etc.
-    console.log(`Editar produto com ID: ${productId}`);
+  const handleEditProduto = (codigoDeBarras) => {
+    const produto = produtos.find(
+      (produto) => produto.codigoDeBarras === codigoDeBarras
+    )
+    if (produto){
+      setCodigo(produto.codigoDeBarras)
+      setName(produto.nomeProduto)
+      setQuantidade(produto.quantidade)
+      setDescricao(produto.descricao)
+      setPrecoUnit(produto.precoUnit)
+      setEditProdutoId(codigoDeBarras)
+    }
+    console.log(`Editar produto com ID: ${codigoDeBarras}`);
   };
   
-  const handleDelete = async (codigoDeBarras) => {
+  const handleDeleteProduto = async (codigoDeBarras) => {
     try {
       await axios.delete(`http://localhost:8080/v1/produtos/${codigoDeBarras}`);
       const updatedProdutos = produtos.filter((produto) => produto.codigoDeBarras !== codigoDeBarras);
@@ -125,93 +151,108 @@ export const Produtos = () => {
     <div id="clientesForm">
       <h1>Produtos</h1>
       <div id="wrapFormCli">
-      <form id="formPrincipal">
-      <div id="inputsContainer">
-        <Inputs
-            labelText="Código de Barras"
-            inputType="number"
-            inputId="bigInput"
-            placehInput="Cod Barras"
-            errorMessage="Codigo inválido"
-            containerType="bigContainer"
-            value={codigoDeBarras}
-            onChange={handleCodigoChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidCodigo}
-          />
-          <Inputs
-            labelText="Produto"
-            inputType="text"
-            inputId="bigInput"
-            placehInput="Produto"
-            errorMessage="Produto inválido"
-            containerType="bigContainer"
-            value={nomeProduto}
-            onChange={handleNameChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidName}
-          />
-          <Inputs
-            labelText="Descricao"
-            inputType="text"
-            inputId="bigInput"
-            placehInput="Descricao"
-            errorMessage="Descricao inválida"
-            containerType="bigContainer"
-            value={descricao}
-            onChange={handleDescricaoChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidDescricao}
-          />
-          <Inputs
-            labelText="Quantidade"
-            inputType="number"
-            inputId="bigInput"
-            placehInput="Quantidade"
-            errorMessage="Quantidade inválida"
-            containerType="bigContainer"
-            value={quantidade}
-            onChange={handleQuantidadeChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidQuantidade}
-          />
-          <Inputs
-            labelText="Preco Unit"
-            inputType="number"
-            inputId="bigInput"
-            placehInput="Preco Unit"
-            errorMessage="Preco inválido"
-            containerType="bigContainer"
-
-            value={precoUnit}
-            onChange={handlePrecoUnitChange}
-            regex={/^(?!\s*$).+/}
-            isValid={isValidPrecoUnit}
-          />
-        </div>
-        <button id="botaoCliente" onClick={handleFormSubmit}>Adicionar <AiOutlinePlus/></button>
-      </form>
-      <section id="tabelansky">
-        <div id="clienteTableUp">
-          <p>Código</p>
-          <p>Nome</p>
-          <p>Preço</p>
-          <p>Quantidade</p>
-        </div>
-        {produtos.map((produto) => (
-  <div key={produto.codigoDeBarras} id="clienteTableDown">
-    <p>{produto.codigoDeBarras}</p>
-    <p>{produto.nomeProduto}</p>
-    <p>{produto.precoUnit}</p>
-    <p>{produto.quantidade}</p>
-    <div id="edit">
-      <button className="buttonED" onClick={() => handleEdit(produto.codigoDeBarras)}><AiFillEdit /></button>
-      <button className="buttonED" onClick={() => handleDelete(produto.codigoDeBarras)}><AiFillDelete /></button>
-    </div>
-  </div>
-))}
-      </section>
+        <form id="formPrincipal">
+          <div id="inputsContainer">
+            <Inputs
+              labelText="Código de Barras"
+              inputType="number"
+              inputId="bigInput"
+              placehInput="Cod Barras"
+              errorMessage="Codigo inválido"
+              containerType="bigContainer"
+              value={codigoDeBarras}
+              onChange={handleCodigoChange}
+              regex={/^(?!\s*$).+/}
+              isValid={isValidCodigo}
+              readOnly={editProdutoId !== null}
+            />
+            <Inputs
+              labelText="Produto"
+              inputType="text"
+              inputId="bigInput"
+              placehInput="Produto"
+              errorMessage="Produto inválido"
+              containerType="bigContainer"
+              value={nomeProduto}
+              onChange={handleNameChange}
+              regex={/^(?!\s*$).+/}
+              isValid={isValidName}
+            />
+            <Inputs
+              labelText="Descricao"
+              inputType="text"
+              inputId="bigInput"
+              placehInput="Descricao"
+              errorMessage="Descricao inválida"
+              containerType="bigContainer"
+              value={descricao}
+              onChange={handleDescricaoChange}
+              regex={/^(?!\s*$).+/}
+              isValid={isValidDescricao}
+            />
+            <Inputs
+              labelText="Quantidade"
+              inputType="number"
+              inputId="bigInput"
+              placehInput="Quantidade"
+              errorMessage="Quantidade inválida"
+              containerType="bigContainer"
+              value={quantidade}
+              onChange={handleQuantidadeChange}
+              regex={/^(?!\s*$).+/}
+              isValid={isValidQuantidade}
+            />
+            <Inputs
+              labelText="Preco Unit"
+              inputType="number"
+              inputId="bigInput"
+              placehInput="Preco Unit"
+              errorMessage="Preco inválido"
+              containerType="bigContainer"
+              value={precoUnit}
+              onChange={handlePrecoUnitChange}
+              regex={/^(?!\s*$).+/}
+              isValid={isValidPrecoUnit}
+            />
+          </div>
+          <button id="botaoCliente" onClick={handleFormSubmit}>
+          {editProdutoId ? "Editar" : "Adicionar"} <AiOutlinePlus />
+          </button>
+        </form>
+        <section id="tabelansky">
+          <div id="clienteTableUp">
+            <p>Código</p>
+            <p>Produto</p>
+            <p>Quantidade</p>
+            <p>Preço</p>
+            <p>Ações</p>
+          </div>
+          {produtos.map((produto) => (
+            <div key={produto.codigoDeBarras} id="clienteTableDown">
+              <p>{produto.codigoDeBarras}</p>
+              <p>{produto.nomeProduto}</p>
+              <p>{produto.quantidade}</p>
+              <p>R$ {produto.precoUnit}</p>
+              <div id="edit">
+                <button
+                  className="buttonED"
+                  onClick={() => handleEditProduto(produto.codigoDeBarras)}
+                >
+                  <AiFillEdit />
+                </button>
+                <button
+                  className="buttonED"
+                  onClick={() => handleDeleteProduto(produto.codigoDeBarras)}
+                >
+                  <AiFillDelete />
+                </button>
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Produtos;
