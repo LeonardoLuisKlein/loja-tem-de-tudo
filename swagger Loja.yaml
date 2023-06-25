@@ -1,0 +1,394 @@
+swagger: "2.0"
+info:
+  title: API de Gerenciamento de Vendas
+  version: 1.0.0
+paths:
+  /clientes:
+    get:
+      summary: Retorna todos os clientes
+      responses:
+        200:
+          description: Lista de clientes retornada com sucesso
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                nome:
+                  type: string
+                cpf:
+                  type: string
+                dataNasc:
+                  type: string
+                  format: date
+                endereco:
+                  type: string
+            example:
+              - nome: string
+                dataNasc: string
+                cpf: string
+                endereco: string
+                id_Cliente: 0
+
+    post:
+      summary: Cria um novo cliente
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+              cpf:
+                type: string
+              dataNasc:
+                type: string
+                format: date
+              endereco:
+                type: string
+      responses:
+        201:
+          description: Cliente criado com sucesso
+
+  /clientes/{id}:
+    get:
+      summary: Retorna os detalhes de um cliente específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Detalhes do cliente retornados com sucesso
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+              cpf:
+                type: string
+              dataNasc:
+                type: string
+                format: date
+              endereco:
+                type: string
+              id_Cliente:
+                type: integer
+            example:
+              nome: string
+              dataNasc: string
+              cpf: string
+              endereco: string
+              id_Cliente: 0
+
+    put:
+      summary: Atualiza os dados de um cliente específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+              cpf:
+                type: string
+              dataNasc:
+                type: string
+                format: date
+              endereco:
+                type: string
+      responses:
+        200:
+          description: Cliente atualizado com sucesso
+
+    delete:
+      summary: Deleta um cliente específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        204:
+          description: Cliente deletado com sucesso
+
+  /produtos:
+    get:
+      summary: Retorna todos os produtos
+      responses:
+        200:
+          description: Lista de produtos retornada com sucesso
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                codigoDeBarras:
+                  type: integer
+                nomeProduto:
+                  type: string
+                descricao:
+                  type: string
+                quantidade:
+                  type: integer
+                precoUnit:
+                  type: number
+            example:
+              - codigoDeBarras: 0
+                nomeProduto: string
+                descricao: string
+                quantidade: 0
+                precoUnit: 0.0
+
+    post:
+      summary: Cria um novo produto
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              codigoDeBarras:
+                type: integer
+              nomeProduto:
+                type: string
+              descricao:
+                type: string
+              quantidade:
+                type: integer
+              precoUnit:
+                type: number
+      responses:
+        201:
+          description: Produto criado com sucesso
+
+  /produtos/{id}:
+    get:
+      summary: Retorna os detalhes de um produto específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Detalhes do produto retornados com sucesso
+          schema:
+            type: object
+            properties:
+              codigoDeBarras:
+                type: integer
+              nomeProduto:
+                type: string
+              descricao:
+                type: string
+              quantidade:
+                type: integer
+              precoUnit:
+                type: number
+            example:
+              codigoDeBarras: 0
+              nomeProduto: string
+              descricao: string
+              quantidade: 0
+              precoUnit: 0.0
+
+    put:
+      summary: Atualiza os dados de um produto específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              codigoDeBarras:
+                type: integer
+              nomeProduto:
+                type: string
+              descricao:
+                type: string
+              quantidade:
+                type: integer
+              precoUnit:
+                type: number
+      responses:
+        200:
+          description: Produto atualizado com sucesso
+
+    delete:
+      summary: Deleta um produto específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        204:
+          description: Produto deletado com sucesso
+
+  /vendas:
+    get:
+      summary: Retorna todas as vendas
+      responses:
+        200:
+          description: Lista de vendas retornada com sucesso
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                precoUnit:
+                  type: number
+                produtoEntity:
+                  type: object
+                  properties:
+                    precoUnit:
+                      type: number
+                    quantidade:
+                      type: integer
+                    descricao:
+                      type: string
+                    codigoDeBarras:
+                      type: integer
+                    nomeProduto:
+                      type: string
+                quantidade:
+                  type: integer
+                precoTotal:
+                  type: number
+                clienteEntity:
+                  type: object
+                  properties:
+                    nome:
+                      type: string
+                    dataNasc:
+                      type: string
+                      format: date
+                    cpf:
+                      type: string
+                    endereco:
+                      type: string
+                    id_Cliente:
+                      type: integer
+                id_Venda:
+                  type: integer
+            example:
+              - precoUnit: 0.0
+                produtoEntity:
+                  precoUnit: 0.0
+                  quantidade: 0
+                  descricao: string
+                  codigoDeBarras: 0
+                  nomeProduto: Produto
+                quantidade: 0
+                precoTotal: 0.0
+                clienteEntity:
+                  nome: string
+                  dataNasc: string
+                  cpf: string
+                  endereco: string
+                  id_Cliente: 0
+                id_Venda: 0
+
+    post:
+      summary: Cria uma nova venda
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id_Cliente:
+                type: integer
+              codigoDeBarras:
+                type: integer
+              quantidade:
+                type: integer
+              precoUnit:
+                type: number
+      responses:
+        201:
+          description: Venda criada com sucesso
+
+  /vendas/{id}:
+    get:
+      summary: Retorna os detalhes de uma venda específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Detalhes da venda retornados com sucesso
+          schema:
+            type: object
+            properties:
+              precoUnit:
+                type: number
+              produtoEntity:
+                type: object
+                properties:
+                  precoUnit:
+                    type: number
+                  quantidade:
+                    type: integer
+                  descricao:
+                    type: string
+                  codigoDeBarras:
+                    type: integer
+                  nomeProduto:
+                    type: string
+              quantidade:
+                type: integer
+              precoTotal:
+                type: number
+              clienteEntity:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                  dataNasc:
+                    type: string
+                    format: date
+                  cpf:
+                    type: string
+                  endereco:
+                    type: string
+                  id_Cliente:
+                    type: integer
+              id_Venda:
+                type: integer
+            example:
+              precoUnit: 0.0
+              produtoEntity:
+                precoUnit: 0.0
+                quantidade: 0
+                descricao: string
+                codigoDeBarras: 0
+                nomeProduto: string
+              quantidade: 0
+              precoTotal: 0.0
+              clienteEntity:
+                nome: string
+                dataNasc: string
+                cpf: string
+                endereco: string
+                id_Cliente: 0
+              id_Venda: 0
