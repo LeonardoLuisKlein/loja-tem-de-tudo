@@ -99,7 +99,7 @@ export const Produtos = () => {
           });
           setProdutos(updatedProdutos);
           window.alert("Produto atualizado com sucesso");
-        } {
+        } else {
         const response = await axios.post('http://localhost:8080/v1/produtos', novoProduto);
         console.log(response.data);
         setProdutos([...produtos, novoProduto]);
@@ -139,10 +139,10 @@ export const Produtos = () => {
       await axios.delete(`http://localhost:8080/v1/produtos/${codigoDeBarras}`);
       const updatedProdutos = produtos.filter((produto) => produto.codigoDeBarras !== codigoDeBarras);
       setProdutos(updatedProdutos);
-      window.alert('Deu bão');
+      window.alert(`Produto de código ${codigoDeBarras} foi deletado com sucesso!`);
       console.log(`Excluir produto com código de barras: ${codigoDeBarras}`);
     } catch (error) {
-      window.alert('Erro ao enviar dados para o backend');
+      window.alert(`Erro ao deletar o produto do código ${codigoDeBarras}`);
       console.error(error);
     }
   };
