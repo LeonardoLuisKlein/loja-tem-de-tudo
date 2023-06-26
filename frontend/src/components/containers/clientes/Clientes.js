@@ -117,12 +117,12 @@ export const Clientes = () => {
         (cliente) => cliente.id_Cliente !== clienteId
       );
       setClientes(updatedClientes);
-      window.alert("Sucesso ao deletar");
+      window.alert(`Cliente do id ${clienteId} foi deletado com sucesso!`);
     } catch (error) {
       if (error.response && error.response.data) {
         console.log(error.response.data);
       }
-      window.alert("Erro ao deletar");
+      window.alert("Erro ao deletar o produto");
     }
   };
 
