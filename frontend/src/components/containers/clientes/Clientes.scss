@@ -106,7 +106,7 @@ svg{
     border-bottom: 1px solid #d4d4d4;
     font-size: 1.5rem;
     @media (max-width: 768px) {
-        width: 99%;
+        width: auto;
         font-size: 1rem;
         gap: 10px;
       }

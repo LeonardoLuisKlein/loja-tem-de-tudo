@@ -66,6 +66,7 @@ export const Buscar = () => {
       <h1>Buscar registros da Loja</h1>
       <div className="buscarItens">
         <div className="wrapBusca">
+        <h2>Buscar Produtos</h2>
           <label htmlFor="produtoId" className="labelBasic">Código de barras do Produto:</label>
           <input
             type="text"
@@ -88,6 +89,7 @@ export const Buscar = () => {
       </div>
       <div className="buscarItens">
         <div className="wrapBusca">
+          <h2>Buscar Clientes</h2>
           <label htmlFor="clienteId" className="labelBasic">ID do Cliente:</label>
           <input
             type="text"
@@ -109,6 +111,7 @@ export const Buscar = () => {
         </div>
         <div className="buscarItens">
         <div className="wrapBusca">
+          <h2>Buscar Vendas</h2>
           <label htmlFor="vendaId" className="labelBasic">ID da venda:</label>
           <input
             type="text"

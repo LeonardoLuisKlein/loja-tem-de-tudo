@@ -99,7 +99,7 @@ export const Vendas = () => {
       console.log(response.data);
       setVendas([...vendas, response.data]);
       window.alert("Dados enviados com sucesso");
-      // Você pode tratar a resposta do backend aqui, se necessário
+      fetchData();
     } catch (error) {
       window.alert('Erro ao enviar dados para o backend:', error);
     }

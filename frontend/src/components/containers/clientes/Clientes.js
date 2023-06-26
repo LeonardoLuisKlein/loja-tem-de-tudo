@@ -97,6 +97,7 @@ export const Clientes = () => {
           setClientes([...clientes, response.data]);
           window.alert("Dados enviados com sucesso");
         }
+        fetchData();
       } catch (error) {
         console.error(error);
         window.alert("Erro ao enviar dados para o backend");
@@ -122,7 +123,7 @@ export const Clientes = () => {
       if (error.response && error.response.data) {
         console.log(error.response.data);
       }
-      window.alert("Erro ao deletar o produto");
+      window.alert(`Erro ao deletar o cliente de id ${clienteId}`);
     }
   };
 
@@ -169,13 +170,13 @@ export const Clientes = () => {
               value={endereco}
               onChange={handleEnderecoChange}
               regex={
-                /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+                /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
               }
               isValid={isValidEndereco}
             />
             <Inputs
               labelText="CPF"
-              inputType="text"
+              inputType="masked"
               inputId="bigInput"
               placehInput="CPF"
               errorMessage="CPF inválido"

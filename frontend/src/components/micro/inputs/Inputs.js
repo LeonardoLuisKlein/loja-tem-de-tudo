@@ -1,5 +1,6 @@
 import React from 'react';
-import './Inputs.scss'
+import InputMask from 'react-input-mask';
+import './Inputs.scss';
 
 export function Inputs(props) {
   const { regex, errorMessage, isValid, value, onChange, readOnly } = props;
@@ -16,15 +17,28 @@ export function Inputs(props) {
   return (
     <div id={props.containerType}>
       <label className="labelInput">{props.labelText}</label>
-      <input
-        id="inputPrincipal"
-        type={props.inputType}
-        value={value}
-        placeholder={props.placehInput}
-        readOnly={props.readOnly} // Adicione a propriedade readOnly aqui
-        onChange={handleInputChange}
-        className={!isValid || !isInputValid() ? 'invalid' : ''}
-      />
+      {props.inputType === 'masked' ? (
+        <InputMask
+          id="inputPrincipal"
+          mask="999.999.999-99"
+          maskChar={null}
+          value={value}
+          placeholder={props.placehInput}
+          readOnly={readOnly}
+          onChange={handleInputChange}
+          className={!isValid || !isInputValid() ? 'invalid' : ''}
+        />
+      ) : (
+        <input
+          id="inputPrincipal"
+          type={props.inputType}
+          value={value}
+          placeholder={props.placehInput}
+          readOnly={readOnly}
+          onChange={handleInputChange}
+          className={!isValid || !isInputValid() ? 'invalid' : ''}
+        />
+      )}
       {!isValid && <span className="basicError">{errorMessage}</span>}
     </div>
   );
