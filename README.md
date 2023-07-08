@@ -9,7 +9,8 @@ o nome foi utilizado como ideia para a criação de uma aplicação Web, utiliza
 Para utilizar o frontend, navegue no terminal até a pasta frontend e execute o comando npm install, após a instalação execute o npm start
 
 ### Back-end:
-Para usar o backend, entre na pasta backend e com o InteliJ, faça o build do projeto e após, dentro do arquivo Application, execute o projeto
+Para usar o backend, entre na pasta backend e com o InteliJ, faça o build do projeto e após, dentro do arquivo Application.java, execute o projeto
+lembre-se de alterar o datasource no arquivo application.yaml conforme está seu banco de dados
 
 ### Banco de dados:
 Para utilizar o banco de dados, crie uma base de dados de preferência no postgrees com o nome "loja", o spring criará as tabelas necessárias
